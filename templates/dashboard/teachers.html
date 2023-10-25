@@ -1,0 +1,39 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block embedded_page_content %}
+    <div class="grid-container">
+        <div class="form-container">
+            <h2>Добавить тренера или сопровождающего</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Добавить</button>
+            </form>
+        </div>
+        <div class="list-container">
+            <h2>Список тренеров и сопровождающих</h2>
+            {% for teacher in teachers %}
+                <table class="invisible-table">
+                    <tr>
+                        <td>{{ teacher.name }} {{ teacher.last_name }}</td>
+                        <td>
+                            <form id="deleteForm{{ teacher.id }}" method="post"
+                                  action="{% url 'delete_teacher' teacher.id %}">
+                                {% csrf_token %}
+                                <div class="delete-button" onclick="submitForm('deleteForm{{ teacher.id }}')">&#10006;
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function submitForm(formId) {
+            document.getElementById(formId).submit();
+        }
+    </script>
+{% endblock %}
+

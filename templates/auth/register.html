@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <body class="content">
+    <h2 align="center">Регистрация</h2>
+    {% if error_message %}
+        <p class="error">{{ error_message }}</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="email" style="margin: 15px; padding: 10px">Email:</label>
+        <input type="email" name="email" required style="width: 300px;">
+        <br><br>
+        <label for="name" style="margin: 15px; padding: 10px">Название организации:</label>
+        <input type="text" name="name" required style="width: 300px;">
+        <br><br>
+        <label for="country" style="margin: 15px; padding: 10px">Страна:</label>
+        <input type="text" name="country" required style="width: 300px;">
+        <br><br>
+        <label for="region" style="margin: 15px; padding: 10px">Регион:</label>
+        <input type="text" name="region" required style="width: 300px;">
+        <br><br>
+        <label for="city" style="margin: 15px; padding: 10px">Населенный пункт:</label>
+        <input type="text" name="city" required style="width: 300px;">
+        <br><br>
+        <label for="postcode" style="margin: 15px; padding: 10px">Индекс:</label>
+        <input type="text" name="postcode" required style="width: 300px;">
+        <br><br>
+
+        <label for="password" style="margin: 15px; padding: 10px">Пароль:</label>
+        <input type="password" name="password" required style="width: 300px;">
+        <br><br>
+        <label for="confirm_password" style="margin: 15px; padding: 10px">Подтверждение пароля:</label>
+        <input type="password" name="confirm_password" required style="width: 300px;">
+        <br><br>
+        <input type="checkbox" id="personal_data" style="margin: 15px; padding: 10px" required>
+        <label for="personal_data" style="margin: 15px; padding: 10px">Я соглашаюсь с обработкой персональных
+            данных</label>
+        <br><br>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    </body>
+
+{% endblock %}

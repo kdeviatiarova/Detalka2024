@@ -1,0 +1,48 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/styles.css"/>
+</head>
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="{% url 'teachers' %}">Тренеры и сопровождающие</a></li>
+                <li><a href="{% url 'students' %}">Участники</a></li>
+                <li><a href="{% url 'categories' age_category_id=1 %}">Младшая Категория</a></li>
+                <li><a href="{% url 'categories' age_category_id=1 %}">Средняя Категория</a></li>
+                <li><a href="{% url 'categories' age_category_id=3 %}">Старшая Категория</a></li>
+            </ul>
+        </div>
+        <div class="content" style="width: 80%">
+            {% block embedded_page_content %}
+                    <h2>Доступные места в категориях</h2>
+                    {% for age_category in age_categories %}
+                        <h3>{{ age_category.name }}</h3>
+                        {% for game_category in age_category.gamecategory_set.all %}
+                            <h4>{{ game_category.name }}</h4>
+                            <table class="game-table">
+                                <tr>
+                                    <th>Название игры</th>
+                                    <th>Доступные места</th>
+                                </tr>
+                                {% for game in game_category.individualgame_set.all %}
+                                    <tr>
+                                        <td>{{ game.name }}</td>
+                                        <td>{{ game.available|default:"Недоступно" }}</td>
+                                    </tr>
+                                {% endfor %}
+                                {% for game in game_category.teamgame_set.all %}
+                                    <tr>
+                                        <td>{{ game.name }}</td>
+                                        <td>{{ game.available|default:"Недоступно" }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endblock %}
+    </div>
+{% endblock %}

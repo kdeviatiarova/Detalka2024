@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/styles.css"/>
+    <title>ДЕТалька 2024</title>
+
+    <!-- Add your CSS links here -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <h1>ДЕТалька 2024</h1>
+        <ul class="navbar-list">
+            {% if user.is_authenticated %}
+                <li class="navbar-item"><a href="{% url 'main' %}">Главная страница</a></li>
+                <li class="navbar-item"><a href="{% url 'dashboard' %}">Личный кабинет ({{ user.username }})</a></li>
+                <li class="navbar-item"><a href="{% url 'logout' %}">Выйти</a></li>
+            {% else %}
+                <li class="navbar-item"><a href="{% url 'main' %}">Главная страница</a></li>
+                {% if request.path != '/register/' %}
+                    <li class="navbar-item"><a href="{% url 'register' %}">Регистрация</a></li>
+                {% endif %}
+                {% if request.path != '/login/' %}
+                    <li class="navbar-item"><a href="{% url 'login' %}">Вход</a></li>
+                {% endif %}
+
+            {% endif %}
+            <!-- Add more navigation links as needed -->
+        </ul>
+    </nav>
+</header>
+
+<main>
+    {% block content %}
+
+    {% endblock %}
+</main>
+
+<footer>
+    <!-- Add footer content here -->
+</footer>
+<!-- Add your JavaScript scripts here -->
+</body>
+</html>
