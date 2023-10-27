@@ -235,8 +235,8 @@
                         <td>
                             {{ team.name }} - {{ team.game.name }}
                             <ul>
-                                {% for student in team.student_set.all %}
-                                    <li>{{ student.name }} {{ student.last_name }}</li>
+                                {% for participant in team.teamparticipant_set.all %}
+                                    <li>{{ participant.student.name }} {{ participant.student.last_name }}</li>
                                 {% endfor %}
                             </ul>
                         </td>
@@ -258,9 +258,6 @@
         function submitForm(formId) {
             document.getElementById(formId).submit();
         }
-    </script>
-
-    <script>
 
         $(document).ready(function () {
             // Hide game categories and games initially
@@ -289,21 +286,18 @@
                     url: url,
                     data: formData,
                     success: function (response) {
-                        // Handle success, e.g., show a success message or update the UI
+
                         console.log('Form submitted successfully');
-                        // Close the modal after a successful submission
                         closeModalAfterSubmission();
-                        // You might want to refresh the page or update the UI with the new data here
+                        window.location.reload();
                     },
                     error: function (error) {
-                        // Handle error, e.g., display an error message
                         console.error('Error:', error);
                     }
                 });
             });
 
             function closeModalAfterSubmission() {
-                // Find the open modal and close it
                 $('.modal:visible').hide();
             }
         });

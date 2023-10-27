@@ -26,10 +26,10 @@
             {% else %}
                 <li class="navbar-item"><a href="{% url 'main' %}">Главная страница</a></li>
                 {% if request.path != '/register/' %}
-                    <li class="navbar-item"><a href="{% url 'register' %}">Регистрация</a></li>
+{#                    <li class="navbar-item"><a href="{% url 'register' %}">Регистрация</a></li>#}
                 {% endif %}
                 {% if request.path != '/login/' %}
-                    <li class="navbar-item"><a href="{% url 'login' %}">Вход</a></li>
+{#                    <li class="navbar-item"><a href="{% url 'login' %}">Вход</a></li>#}
                 {% endif %}
 
             {% endif %}

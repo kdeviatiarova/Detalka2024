@@ -49,7 +49,6 @@ class Institution(AbstractUser):
         return self.email
 
     def save(self, *args, **kwargs):
-        # Set the username to the email address without the "@" part
         if not self.username:
             self.username = self.email.split('@')[0]
         super().save(*args, **kwargs)
@@ -127,7 +126,6 @@ class Team(models.Model):
 class Student(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE, null=True, blank=True)
     last_name = models.CharField(max_length=100, default="")
-    team = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=100, default="")
     patronymic = models.CharField(max_length=100, default="")
     date_of_birth = models.DateField()
@@ -149,3 +147,9 @@ class StudentGameCategory(models.Model):
     class Meta:
         unique_together = ('student', 'game_category')
 
+class TeamParticipant(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)  # Assuming you have a Team model
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)  # Assuming you have a Student model
+
+    def __str__(self):
+        return f"{self.team.name} - {self.student.name} {self.student.last_name}"

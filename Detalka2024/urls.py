@@ -26,7 +26,7 @@ urlpatterns = [
 
     # Authentication URLs
     path('login/', auth_views.LoginView.as_view(template_name='auth/login.html'), name='login'),
-    path('out/', auth_views.LogoutView.as_view(template_name='main_page.html'), name='logout'),
+    path('', auth_views.LogoutView.as_view(template_name='main_page.html'), name='logout'),
     path('', views.main_page, name='main'),
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
@@ -44,7 +44,6 @@ urlpatterns = [
     path('delete_student/<int:student_id>/', views.delete_student, name='delete_student'),
 
     path('dashboard/c/<int:age_category_id>/', views.categories, name='categories'),
-    # path('dashboard/c/<int:age_category_id>/', views.team_categories, name='tcategories'),
 
     path('delete_sgc/<int:studentgamecategory_id>/<int:age_category_id>/', views.delete_sgc, name='delete_sgc'),
 

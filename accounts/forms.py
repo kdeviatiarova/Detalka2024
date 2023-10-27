@@ -4,7 +4,7 @@ from django.forms.widgets import DateInput
 
 
 class NameInput(forms.TextInput):
-    input_type = 'text'  # Use a text input type for custom formatting
+    input_type = 'text'
 
     def render(self, name, value, attrs=None, renderer=None):
         rendered = super().render(name, value, attrs, renderer)
@@ -57,7 +57,7 @@ class TeacherForm(forms.ModelForm):
     def save(self, commit=True, user=None):
         teacher = super().save(commit=False)
         if user:
-            teacher.institution = user  # Assign institution correctly
+            teacher.institution = user
         if commit:
             teacher.save()
         return teacher
@@ -97,7 +97,7 @@ class StudentForm(forms.ModelForm):
     def save(self, commit=True, user=None):
         student = super().save(commit=False)
         if user:
-            student.institution = user  # Assign institution correctly
+            student.institution = user
         if commit:
             student.save()
         return student

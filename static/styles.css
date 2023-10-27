@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-/* Apply Montserrat font to all elements */
 body, h1, h2, h3, p, ul, li {
     font-family: 'Montserrat', sans-serif;
 }
@@ -10,7 +9,10 @@ h1, h2, h3, p, ul, li {
     padding: 5px;
 }
 
-/* Basic page styling */
+h2, h3 {
+    color: #333;
+}
+
 body {
     font-family: 'Montserrat', sans-serif;
     /*position: fixed;*/
@@ -25,7 +27,6 @@ body {
     padding: 20px;
 }
 
-/* Header styling */
 .header {
     background-color: #333;
     color: #fff;
@@ -37,7 +38,6 @@ body {
     font-size: 24px;
 }
 
-/* Navigation menu */
 .menu {
     text-align: center;
     margin-bottom: 20px;
@@ -50,7 +50,6 @@ body {
     color: #ff6f00;
 }
 
-/* Style the navigation bar */
 .navbar {
     background-color: #ff6f00;
     color: #fff;
@@ -62,7 +61,6 @@ body {
     height: 90px;
 }
 
-/* Style the navigation links */
 .navbar-list {
     list-style: none;
     display: flex;
@@ -83,7 +81,6 @@ body {
     color: #000000;
 }
 
-/* Main content area */
 .content {
     /*top: 150px;*/
     left: 250px;
@@ -91,13 +88,10 @@ body {
     background-color: #f8f8f8;
     position: fixed;
     margin-top: 130px;
-    /* Set a fixed height for the content and make it scrollable */
-    max-height: calc(100vh - 150px); /* Adjust the value according to your needs */
-    /*width: auto;*/
-    overflow-y: auto; /* Add vertical scrollbar if content overflows */
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
 }
 
-/* Form styling */
 .form-container {
     background-color: #f9f9f9;
     padding: 20px;
@@ -108,7 +102,6 @@ body {
     margin: 0;
 }
 
-/* Teacher list styling */
 .teacher-list {
     list-style: none;
     padding: 0;
@@ -137,18 +130,17 @@ body {
 
 .grid-container {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Two equal-width columns */
-    gap: 20px; /* Adjust the gap between columns as needed */
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
 .form-container,
 .list-container {
-    border: 1px solid #ccc; /* Add borders or other styling as desired */
+    border: 1px solid #ccc;
     padding: 20px;
 }
 
 
-/* Style for age category header */
 .age-category-toggle {
     cursor: pointer;
     font-weight: bold;
@@ -158,7 +150,6 @@ body {
     color: #333;
 }
 
-/* Style for game category header */
 .game-category-toggle {
     cursor: pointer;
     font-weight: bold;
@@ -168,7 +159,6 @@ body {
     color: #555;
 }
 
-/* Style for game item */
 .game {
     margin-left: 20px;
     margin-top: 5px;
@@ -189,8 +179,7 @@ body {
     font-size: 14px;
 }
 
-/* Style for the form submit button */
-button[type="submit"] {
+.button[type="submit"] {
     background-color: #ff6f00;
     color: white;
     padding: 12px 24px;
@@ -202,17 +191,14 @@ button[type="submit"] {
     transition: background-color 0.3s ease;
 }
 
-/* Style for the form submit button on hover */
-button[type="submit"]:hover {
+.button[type="submit"]:hover {
     background-color: #0056b3;
 }
 
-/* Hide the default dropdown arrow in select2 */
 .select2-container .select2-selection--single .select2-selection__arrow {
     display: none;
 }
 
-/* Styling for the overall page container */
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -221,7 +207,6 @@ button[type="submit"]:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Sidebar styles */
 .dashboard-container {
     display: flex;
 }
@@ -231,10 +216,9 @@ button[type="submit"]:hover {
     left: 0;
     top: 120px;
     height: 100vh;
-    width: 220px; /* Set your desired width */
+    width: 220px;
     background-color: #333;
     color: white;
-    /*padding: 20px;*/
 }
 
 .sidebar ul {
@@ -254,9 +238,6 @@ button[type="submit"]:hover {
 .sidebar a:hover {
     color: #ff5555;
 }
-
-/* Content styles */
-
 
 .game-table {
     width: 100%;
@@ -282,10 +263,6 @@ button[type="submit"]:hover {
     background-color: #ddd;
 }
 
-h2, h3 {
-    color: #333;
-}
-
 
 .delete-button {
     font-size: 24px;
@@ -293,7 +270,7 @@ h2, h3 {
 }
 
 .delete-button:hover {
-    color: red; /* Change color on hover if desired */
+    color: red;
 }
 
 .invisible-table {

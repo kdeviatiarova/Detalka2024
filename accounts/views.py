@@ -5,13 +5,8 @@ from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views import View
-
 from .models import *
 from .forms import *
-from django.http import JsonResponse, HttpResponse
-import csv
-import zipfile
-from io import BytesIO
 
 
 def main_page(request):
@@ -19,7 +14,7 @@ def main_page(request):
 
 
 class CustomLoginView(LoginView):
-    template_name = 'auth/login.html'  # Path to your login template
+    template_name = 'auth/login.html'
 
 
 def register(request):
@@ -33,14 +28,11 @@ def register(request):
         confirm_password = request.POST.get('confirm_password')
 
         if password == confirm_password:
-            # Create the Institution instance
             institution = get_user_model().objects.create_user(
                 email=email,
-                # Set other fields
                 password=password,
             )
-            # You can also log the institution in here if desired
-            return redirect('login')  # Redirect to login page after successful registration
+            return redirect('login')
         else:
             error_message = "Passwords do not match. Please try again."
             return render(request, 'auth/register.html', {'error_message': error_message})
@@ -51,7 +43,6 @@ def register(request):
 @login_required
 def dashboard(request):
     user = request.user
-    # Add logic to fetch user-related data and render the dashboard
     return render(request, 'dashboard/dashboard.html', {'user': user})
 
 
@@ -62,7 +53,7 @@ def teachers(request):
         form = TeacherForm(request.POST)
         if form.is_valid():
             form.save(commit=True, user=request.user)
-            return redirect('teachers')  # Redirect to the same page after creating a teacher
+            return redirect('teachers')
     else:
         form = TeacherForm()
     return render(request, 'dashboard/teachers.html', {'form': form, 'teachers': teachers})
@@ -75,7 +66,7 @@ def teacher_list(request):
         teacher_id = request.POST.get('teacher_id')
         teacher = Teacher.objects.get(pk=teacher_id)
         teacher.delete()
-        return redirect('teachers')  # Redirect to teacher list page after deletion
+        return redirect('teachers')
 
     form = TeacherForm()
     return render(request, 'dashboard/teachers.html', {'teachers': teachers, 'form': form})
@@ -85,16 +76,17 @@ def delete_teacher(request, teacher_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)
     if request.method == 'POST':
         teacher.delete()
-    return redirect('teachers')  # Redirect back to the teacher creation page
+    return redirect('teachers')
 
 
 def students(request):
-    students = Student.objects.filter(institution=request.user)
+    institution = request.user
+    students = Student.objects.filter(institution=institution)
 
     if request.method == 'POST':
-        form = StudentForm(request.user, request.POST)  # Pass the user to the form
+        form = StudentForm(request.POST)
         if form.is_valid():
-            form.save(commit=True, user=request.user)
+            form.save(commit=True, user=institution)
             return redirect('students')
     else:
         form = StudentForm()
@@ -106,7 +98,7 @@ def delete_student(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
     if request.method == 'POST':
         student.delete()
-    return redirect('students')  # Redirect back to the teacher creation page
+    return redirect('students')
 
 
 def categories(request, age_category_id):
@@ -115,7 +107,7 @@ def categories(request, age_category_id):
     game_categories = age_category.gamecategory_set.all()
     students = Student.objects.filter(institution=institution)
     teachers = Teacher.objects.filter(institution=institution)
-    teams = Team.objects.all()
+    teams = Team.objects.filter(institution=institution)
 
     if request.method == 'POST':
         # Check the form data and handle the logic accordingly
@@ -138,8 +130,6 @@ def categories(request, age_category_id):
             # Iterate over selected students and assign them to the team
             for student_id in student_ids:
                 student = Student.objects.get(id=student_id)
-                student.team = new_team  # Set the team field in the Student model
-                student.save()
 
                 # Create StudentGameCategory instance after setting the team field
                 student_game_category = StudentGameCategory.objects.create(
@@ -149,6 +139,12 @@ def categories(request, age_category_id):
                     teacher_id=teacher_id
                 )
                 student_game_category.save()
+
+                team_partcipants = TeamParticipant.objects.create(
+                    student=student,
+                    team=new_team
+                )
+                team_partcipants.save()
 
             # Update the current count for the team game
             game = TeamGame.objects.get(id=team_game_id)
@@ -169,7 +165,6 @@ def categories(request, age_category_id):
             selected_students = request.POST.getlist(f'students_for_{game_id}')
             teacher_id = request.POST.get('teacher')
 
-            # Iterate through selected student IDs and create StudentGameCategory objects
             for student_id in selected_students:
                 student_game_category = StudentGameCategory(
                     student_id=student_id,
@@ -185,7 +180,6 @@ def categories(request, age_category_id):
 
             return redirect('categories', age_category_id=age_category_id)
 
-
     context = {
         'age_category': age_category,
         'age_category_id': age_category_id,
@@ -196,7 +190,6 @@ def categories(request, age_category_id):
     }
 
     return render(request, 'dashboard/elem.html', context)
-
 
 
 def delete_sgc(request, studentgamecategory_id, age_category_id):
@@ -212,36 +205,35 @@ def delete_sgc(request, studentgamecategory_id, age_category_id):
 
 def delete_team(request, team_id, age_category_id):
     team = get_object_or_404(Team, pk=team_id)
+
     if request.method == 'POST':
-        students_in_team = StudentGameCategory.objects.filter(
-            Q(team_game=team.game_id))
+        # Get the students in the team and delete their StudentGameCategory instances
+        team_participants = TeamParticipant.objects.filter(team=team)
+        for team_participant in team_participants:
+            sgc = StudentGameCategory.objects.filter(student=team_participant.student,
+                                                                         team_game=team.game)
+            sgc.delete()
+        team.game.current -= 1
+        team.game.save()
 
-        # Delete corresponding StudentGameCategory instances
-        students_in_team.delete()
-
-        # Now delete the team
         team.delete()
 
-    return redirect('categories',  age_category_id=age_category_id)  # Redirect back to the teacher creation page
+    return redirect('categories', age_category_id=age_category_id)
 
 
 def dashboard(request):
-    # Retrieve individual games and team games
     age_categories = AgeCategory.objects.all()
     game_categories = GameCategory.objects.all()
     individual_games = IndividualGame.objects.all()
     team_games = TeamGame.objects.all()
 
-    # Calculate available places for individual games
     for game in individual_games:
         game.available = game.max_participants - game.current
         game.save()
 
-    # Calculate available places for team games
     for game in team_games:
         game.available = game.max_teams - game.current
         game.save()
-
 
     context = {
         'age_categories': age_categories,
@@ -251,8 +243,3 @@ def dashboard(request):
     }
 
     return render(request, 'dashboard/dashboard.html', context)
-
-
-
-
-
