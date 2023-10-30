@@ -92,7 +92,7 @@
 {##}
 {% block embedded_page_content %}
     <div class="grid-container">
-        <div class="form-container">
+        <div class="form-container" style="max-width: 100%">
             <h2>{{ age_category.name }}</h2>
             <ul>
                 {% for game_category in age_category.gamecategory_set.all %}
@@ -202,7 +202,7 @@
                 {% endfor %}
             </ul>
         </div>
-        <div class="list-container">
+        <div class="list-container" style="max-width: 100%">
             <h2>Список Участников</h2>
             <table class="invisible-table">
                 {% for game_category in age_category.gamecategory_set.all %}

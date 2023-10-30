@@ -82,7 +82,6 @@ body {
 }
 
 .content {
-    /*top: 150px;*/
     left: 250px;
     /*padding: 20px;*/
     background-color: #f8f8f8;
@@ -90,6 +89,7 @@ body {
     margin-top: 130px;
     max-height: calc(100vh - 150px);
     overflow-y: auto;
+    width: 85%;
 }
 
 .form-container {
@@ -288,3 +288,38 @@ body {
     display: none;
 }
 
+#registration-message {
+    display: none;
+    text-align: center;
+    background-color: #ff6f00;
+    color: #fff;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+@media (max-width: 768px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    #registration-message {
+        display: block;
+    }
+
+    .content {
+        top: 0px;
+        left: 0px;
+        padding: 20px;
+        background-color: #f8f8f8;
+        position: fixed;
+        margin-top: 130px;
+        max-height: calc(100vh - 150px);
+        overflow-y: auto;
+        width: 100%;
+    }
+}
