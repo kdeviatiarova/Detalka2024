@@ -23,7 +23,9 @@ def register(request):
         email = request.POST.get('email')
         name = request.POST.get('name')
         city = request.POST.get('city')
+        region = request.POST.get('region')
         country = request.POST.get('country')
+        postcode = request.POST.get('postcode')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
 
@@ -31,6 +33,11 @@ def register(request):
             institution = get_user_model().objects.create_user(
                 email=email,
                 password=password,
+                name=name,
+                city=city,
+                region=region,
+                country=country,
+                postcode=postcode
             )
             return redirect('login')
         else:
